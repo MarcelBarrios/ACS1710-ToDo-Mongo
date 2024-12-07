@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <h1>FlaskTODO</h1>
+    <hr>
+    <div class="content">
+        <form action="/" method="post">
+            <p>
+                <label>Todo:
+                    <input type="text" name="content" placeholder="Todo Content">
+                </label>
+            </p>
+
+            <div>
+                <p>Priority:</p>
+
+                <p><label>
+                        <input name="priority" required type="radio" value="Important">
+                        Important</label></p>
+
+                <p><label>
+                        <input name="priority" required type="radio" value="Unimportant">
+                        Unimportant</label></p>
+
+                <p><label>
+                        <input name="priority" required type="radio" value="normal">
+                        normal</label></p>
+
+            </div>
+
+            <p><button type="submit">Submit</button></p>
+        </form>
+
+        <hr>
+        {% for todo in todos %}
+        <div class="todo">
+            <p class="{{ todo.priority }}">{{ todo.content }} <em>({{ todo.priority }})</em>
+                - Status: <strong>{{ 'Complete' if todo.complete else 'Not Completed' }}</strong>
+                - Date: <strong>
+                    {{ todo.date.strftime('%Y-%m-%d %H:%M:%S') if todo.date else 'Unknown' }}
+                </strong> </p>
+            <!-- New: delete button  -->
+            <form method="POST" action="{{ '/' ~ todo._id ~ '/delete/'  }}">
+                <input style="margin: 5px;" type="submit" value="Delete Todo"
+                    onclick="return confirm('Are you sure you want to delete this entry?')">
+            </form>
+            {% if not todo.complete %}
+            <form method="POST" action="{{ '/' ~ todo._id ~ '/complete/' }}">
+                <input type="submit" value="Mark as Complete" style="margin: 5px;">
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</body>
+
+</html>
