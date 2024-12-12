@@ -39,3 +39,7 @@ def complete(id):
     new_values = {'$set': {'complete': True}}
     todos.update_one(filter, new_values)
     return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
